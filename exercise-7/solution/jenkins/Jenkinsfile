@@ -1,0 +1,38 @@
+node {
+    def goHome = tool('go-1.11')
+    
+    ws("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/src/github.com/bmuschko/lets-gopher") {
+        withEnv(["GOROOT=${goHome}", "GOPATH=${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/", "PATH+GO=${goHome}/bin"]) {
+            stage('Checkout') {
+                git 'https://github.com/bmuschko/lets-gopher.git'
+            }
+            stage('Prepare') {
+                sh 'go version'
+                sh "mkdir ${GOPATH}/bin"
+                sh 'curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh'
+                sh 'dep ensure'
+            }
+            stage('Compile') {
+                sh 'go build'
+            }
+            stage('Test') {
+                sh './test.sh'
+                withCredentials([string(credentialsId: 'codecov_token', variable: 'CODECOV_TOKEN')]) {
+                    sh "curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN"
+                }
+            }
+            stage('Code Analysis') {
+                sh 'curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin v1.12.5'
+                sh 'golangci-lint run'
+            }
+            def tag = sh(returnStdout: true, script: "git tag --contains | head -1").trim()
+            if (tag) {
+                stage('Release') {
+                     withCredentials([string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN')]) {
+                        sh 'curl -sL https://git.io/goreleaser | bash'
+                    }
+                }
+            }
+        }
+    }
+}
