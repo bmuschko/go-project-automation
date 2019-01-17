@@ -24,7 +24,7 @@ func TestCreateDirForNonExistentDirectory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected directory to %s to be created", newDir)
 	}
-	if fileInfo.Mode().Perm() != 0755 {
+	if fileInfo.Mode().Perm() != os.FileMode(0755) {
 		t.Errorf("Expected directory permissions 0755 but received %s", fileInfo.Mode().Perm())
 	}
 }
@@ -50,7 +50,7 @@ func TestCreateDirForExistentDirectory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected directory to %s to be created", newDir)
 	}
-	if fileInfo.Mode().Perm() != 0755 {
+	if fileInfo.Mode().Perm() != os.FileMode(0755) {
 		t.Errorf("Expected directory permissions 0755 but received %s", fileInfo.Mode().Perm())
 	}
 }
