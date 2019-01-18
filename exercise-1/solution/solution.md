@@ -13,6 +13,8 @@ utils/file.go:30:19:	defer srcfd.Close()
 utils/file.go:35:19:	defer dstfd.Close()
 ```
 
+You can fix the issues by properly handling the errors.
+
 ## Using a linter
 
 To check all packages beneath the current directory, run `golangci-lint run`. You should see the following error warnings:
@@ -29,4 +31,10 @@ You should get a similar result if you just run with the `go vet` tool.
 $ go vet ./...
 # github.com/bmuschko/lets-gopher-exercise/cmd
 cmd/install.go:38: github.com/bmuschko/lets-gopher-exercise/remote.GitRepo composite literal uses unkeyed fields
+```
+
+You can fix the issue by assigning the variables to the fields in `remote.GitRepo`.
+
+```
+repo = &remote.GitRepo{RepoUrl: repoUrl, TargetPath: templ.TemplateDir}
 ```
