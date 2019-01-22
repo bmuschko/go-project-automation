@@ -1,10 +1,10 @@
 node {
     def goHome = tool('go-1.11')
     
-    ws("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/src/github.com/bmuschko/lets-gopher") {
+    ws("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/src/github.com/bmuschko/lets-gopher-exercise") {
         withEnv(["GOROOT=${goHome}", "GOPATH=${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/", "PATH+GO=${goHome}/bin"]) {
             stage('Checkout') {
-                git 'https://github.com/bmuschko/lets-gopher.git'
+                git 'https://github.com/bmuschko/lets-gopher-exercise.git'
             }
             stage('Prepare') {
                 sh 'go version'
@@ -16,7 +16,7 @@ node {
                 sh 'go build'
             }
             stage('Test') {
-                sh './test.sh'
+                sh 'go test ./... -coverprofile=coverage.txt'
                 withCredentials([string(credentialsId: 'codecov_token', variable: 'CODECOV_TOKEN')]) {
                     sh "curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN"
                 }

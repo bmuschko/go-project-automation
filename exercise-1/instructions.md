@@ -16,5 +16,12 @@ In this exercise, you will learn how to use code analysis tools to improve the c
 3. Ensure that the tool stops reporting the issues after re-running it.
 4. (Optional) Try out integrating and running the tool from VSCode or GoLand if you have one of them installed on your machine.
 
+## Using Go Report Card
+
+1. Open [Go Report Card](https://goreportcard.com/) in a browser of your choice.
+2. Enter the `go get` path `github.com/<your-github-account>/lets-gopher-exercise`.
+3. Click the button _Generate Report_. Explore the report metrics.
+4. (Optional) Implement some of the suggestions and push the changes to your repository. Do the metrics and/or suggestions change after reloading the report?
+
 
 

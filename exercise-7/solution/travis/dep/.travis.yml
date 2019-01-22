@@ -1,0 +1,39 @@
+language: go
+
+go:
+  - 1.11.x
+
+install: true
+
+cache:
+  directories:
+    - $GOPATH/pkg/dep
+
+jobs:
+  include:
+    - stage: "Compile"
+      name: "Compile Packages and Dependencies"
+      before_script:
+        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+        - dep ensure
+      script: go build
+    - stage: "Tests"
+      name: "Unit Tests"
+      script: go test ./... -coverprofile=coverage.txt
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+    - stage: "Code Quality"
+      name: "Code Quality Analysis"
+      script: golangci-lint run
+    - stage: "Release"
+      name: "Release Binaries"
+      script: skip
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          before_script:
+            - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin v1.12.5
+          script: curl -sL https://git.io/goreleaser | bash
+          on:
+            tags: true
+            condition: $TRAVIS_OS_NAME = linux
