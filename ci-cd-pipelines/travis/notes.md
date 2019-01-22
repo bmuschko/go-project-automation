@@ -2,10 +2,14 @@
 
 The provided `.travis.yml` files contain an example Travis CI pipeline definition. They use `golangci-lint` for static code analysis and `GoReleaser` for publishing the binary artifacts to GitHub releases.
 
+## Samples
+
 You can find pipeline definitions for `dep` and Go modules:
 
 * Using [dep](./dep/.travis.yml)
 * Using [Go modules](./mod/.travis.yml)
+
+## Pipeline steps
 
 Each pipeline is comprised of multiple build steps:
 
