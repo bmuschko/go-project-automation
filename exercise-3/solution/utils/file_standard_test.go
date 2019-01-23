@@ -1,13 +1,14 @@
 package utils_test
 
 import (
+	. "github.com/bmuschko/lets-gopher-exercise/utils"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 )
 
-func TestCreateDirForNonExistentDirectory(t *testing.T) {
+func TestCreateDirForNonExistentDirectoryWithTestingPackage(t *testing.T) {
 	dir, err := ioutil.TempDir("", "test")
 	if err != nil {
 		t.Errorf("Failed to create temporary directory %s", dir)
@@ -15,7 +16,7 @@ func TestCreateDirForNonExistentDirectory(t *testing.T) {
 	defer os.RemoveAll(dir)
 
 	newDir := filepath.Join(dir, "new")
-	err = CreateDir(filepath.Join(dir, "new"))
+	err = CreateDir(newDir)
 	if err != nil {
 		t.Errorf("Failed to create new directory %s", newDir)
 	}
@@ -29,7 +30,7 @@ func TestCreateDirForNonExistentDirectory(t *testing.T) {
 	}
 }
 
-func TestCreateDirForExistentDirectory(t *testing.T) {
+func TestCreateDirForExistentDirectoryWithTestingPackage(t *testing.T) {
 	dir, err := ioutil.TempDir("", "test")
 	if err != nil {
 		t.Errorf("Failed to create temporary directory %s", dir)
@@ -41,7 +42,7 @@ func TestCreateDirForExistentDirectory(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to create new directory %s", newDir)
 	}
-	err = CreateDir(filepath.Join(dir, "new"))
+	err = CreateDir(newDir)
 	if err != nil {
 		t.Errorf("Failed to create new directory %s", newDir)
 	}

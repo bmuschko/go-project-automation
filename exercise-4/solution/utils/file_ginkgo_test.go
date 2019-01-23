@@ -1,14 +1,13 @@
 package utils_test
 
 import (
+	. "github.com/bmuschko/lets-gopher-exercise/utils"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
-
-	. "github.com/bmuschko/lets-gopher-exercise/utils"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
 
 func TestFileUtils(t *testing.T) {
