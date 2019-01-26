@@ -2,11 +2,13 @@
 
 Demonstrates the purpose and usage of [Go report card](https://goreportcard.com/).
 
+## Usage of web application
+
 * Open Go report card
 * Enter `github.com/bmuschko/lets-gopher-exercise` into input field
 * Click "Generate Report" button
 
-Example of CLI tool:
+## Usage of CLI application
 
 ```
 $ go get -u github.com/gojp/goreportcard/cmd/goreportcard-cli
