@@ -1,4 +1,6 @@
-# Jenkins pipeline
+# Demo 9
+
+Demonstrates how to build a pipeline with Jenkins.
 
 Jenkins can automatically bootstrap the Go runtime with the help pf the [Go plugin](https://wiki.jenkins.io/display/JENKINS/Go+Plugin). It automatically installs a pre-defined version of Go and exports the `GOROOT` and `GOPATH` environment variable.
 

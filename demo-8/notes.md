@@ -1,4 +1,6 @@
-# Travis CI pipeline
+# Demo 8
+
+Demonstrates how to build a pipeline with Travis CI.
 
 The provided `.travis.yml` files contain an example Travis CI pipeline definition. They use `golangci-lint` for static code analysis and `GoReleaser` for publishing the binary artifacts to GitHub releases.
 
