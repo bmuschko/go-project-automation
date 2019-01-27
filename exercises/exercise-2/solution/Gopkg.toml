@@ -1,3 +1,27 @@
+[prune]
+  go-tests = true
+  unused-packages = true
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "=v0.0.3"
+
+[[constraint]]
+  name = "gopkg.in/AlecAivazis/survey.v1"
+  version = "=v1.7.1"
+
+[[constraint]]
+  name = "github.com/mitchellh/go-homedir"
+  version = "=v1.0.0"
+
+[[constraint]]
+  name = "gopkg.in/yaml.v2"
+  version = "=v2.2.2"
+
+[[constraint]]
+  name = "gopkg.in/src-d/go-git.v4"
+  revision = "3dbfb89e0f5bce0008724e547b999fe3af9f60db"
+
 [[constraint]]
   name = "github.com/pkg/errors"
-  version = "=0.8.1"
+  version = "0.8.1"
