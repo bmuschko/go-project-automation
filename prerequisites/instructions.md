@@ -13,7 +13,7 @@ All exercises build upon a sample project. You will need to fork the repository 
 
 1. Open your shell.
 2. Navigate to the directory `$GOPATH/src`.
-3. Create the directory `github.com/<your-github-account>`.
+3. Create the directory `github.com/bmuschko`.
 4. Navigate to the directory you just created.
 5. Clone the forked repository with the command `git clone <your-forked-repository-url>`. To retrieve the URL, click the _Clone or Download_ button for your forked repository on GitHub.
-6. You should end up with the repository cloned in `$GOPATH/src/github.com/<your-github-account>/lets-gopher-exercise`.
+6. You should end up with the repository cloned in `$GOPATH/src/github.com/bmuschko/lets-gopher-exercise`.
