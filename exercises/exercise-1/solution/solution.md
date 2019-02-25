@@ -35,6 +35,6 @@ cmd/install.go:38: github.com/bmuschko/lets-gopher-exercise/remote.GitRepo compo
 
 You can fix the issue by assigning the variables to the fields in `remote.GitRepo`.
 
-```
+```go
 repo = &remote.GitRepo{RepoUrl: repoUrl, TargetPath: templ.TemplateDir}
 ```
