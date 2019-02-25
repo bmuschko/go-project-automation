@@ -1,11 +1,12 @@
 package utils_test
 
 import (
-	. "github.com/bmuschko/lets-gopher-exercise/utils"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	. "github.com/bmuschko/lets-gopher-exercise/utils"
 )
 
 func TestCreateDirForNonExistentDirectoryWithTestingPackage(t *testing.T) {

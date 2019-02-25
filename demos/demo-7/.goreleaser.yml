@@ -33,7 +33,7 @@ changelog:
     - '^test:'
 release:
   disable: true
-  artifactories:
-  - name: production
-    target: http://localhost:8081/artifactory/example-repo-local/{{ .ProjectName }}/{{ .Version }}/
-    username: admin
+artifactories:
+- name: production
+  target: http://localhost:8081/artifactory/example-repo-local/{{ .ProjectName }}/{{ .Version }}/
+  username: admin
