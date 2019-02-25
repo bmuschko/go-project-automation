@@ -10,6 +10,5 @@ In this exercise, you will use Go's `testing` package to implement a simple test
 
 ## Generating code coverage metrics
 
-1. Generate the code coverage for the `utils` package.
-2. Create the HTML report for the coverage metrics in the `utils` package.
-3. Generate code coverage metric for the whole project. Merge metrics if necessary to generate a single, unified coverage report.
+1. Run the tests and generate code coverage metric for the whole project.
+2. Create the HTML report for the coverage metrics. Open the report in the browser.
