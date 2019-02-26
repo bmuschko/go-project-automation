@@ -6,7 +6,7 @@ Demonstrates building and publishing binaries to Artifactory with GoReleaser.
 2. Start Artifactory with via `<installation-directory>/artifactory-oss-6.6.1/bin/artifactory.sh`.
 3. (Optional) Set environment variable `ARTIFACTORY_PRODUCTION_USERNAME`: `export ARTIFACTORY_PRODUCTION_USERNAME=admin`
 4. Set environment variable `ARTIFACTORY_PRODUCTION_SECRET`: `export ARTIFACTORY_PRODUCTION_SECRET=admin`
-5. Add the [GoReleaser configuration file](../.goreleaser.yml) to the root directory of the example project.
+5. Add the [GoReleaser configuration file](./.goreleaser.yml) to the root directory of the example project.
 6. Tag the current release (e.g. with version 0.4) by running the command `git tag -a v0.4 -m "Version 0.4"`.
 7. Publish the binary files with the command `goreleaser release`. You may have to delete existing binaries if the `dist` directory already exists. Use the command line option `--skip-validate` if your local repository checkout still has uncommitted changes.
 
