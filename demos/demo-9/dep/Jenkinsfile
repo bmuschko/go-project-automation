@@ -16,7 +16,7 @@ node {
                 sh 'go build'
             }
             stage('Test') {
-                sh 'go test ./... -coverprofile=coverage.txt'
+                sh 'go test ./... -coverprofile=coverage.txt  -covermode=count'
                 withCredentials([string(credentialsId: 'codecov_token', variable: 'CODECOV_TOKEN')]) {
                     sh "curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN"
                 }
