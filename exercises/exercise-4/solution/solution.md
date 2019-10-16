@@ -1,13 +1,15 @@
 # Solution
 
-1. On the command line, execute `dep ensure -add github.com/stretchr/testify`.
+1. On the command line, execute `go get github.com/stretchr/testify`.
 
 ```
-$ dep ensure -add github.com/stretchr/testify
-Fetching sources...
-
-"github.com/stretchr/testify" is not imported by your project, and has been temporarily added to Gopkg.lock and vendor/.
-If you run "dep ensure" again before actually importing it, it will disappear from Gopkg.lock and vendor/.
+$ go get github.com/stretchr/testify
+go: finding github.com/stretchr/testify v1.4.0
+go: downloading github.com/stretchr/testify v1.4.0
+go: extracting github.com/stretchr/testify v1.4.0
+go: downloading github.com/stretchr/objx v0.1.0
+go: extracting github.com/stretchr/objx v0.1.0
+go: finding github.com/stretchr/objx v0.1.0
 ```
 
 2. Copy/paste the code from [file_testify_test.go](./utils/file_testify_test.go) and overwrite the existing code in `file_test.go`.
