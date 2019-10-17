@@ -1,83 +1,131 @@
 # Solution
 
-1. One of the options to install `dep` is via `go get`: `go get -d -u github.com/golang/dep`. You will get the latest version of `dep`.
-2. Run the command `dep ensure -add github.com/pkg/errors` to resolve the package.
+1. You can check if the environment variable is set by using the `echo` command e.g. `echo $GO111MODULES` (Linux, MacOS) or `echo %GO111MODULES%` (Windows).
+2. Run the command `go get github.com/pkg/errors` to resolve the package.
 
 ```
-$ dep ensure -add github.com/pkg/errors
-Fetching sources...
+$ go get github.com/pkg/errors
+go: finding github.com/pkg/errors v0.8.1
+go: downloading github.com/pkg/errors v0.8.1
+go: extracting github.com/pkg/errors v0.8.1
+```
 
-"github.com/pkg/errors" is not imported by your project, and has been temporarily added to Gopkg.lock and vendor/.
-If you run "dep ensure" again before actually importing it, it will disappear from Gopkg.lock and vendor/.
+The contents of `go.mod` look as follows. You can see that the `errors` package has been marked as indirect. The indirect comment indicates a dependency is not used directly by this module, only indirectly by other module dependencies.
+
+```
+module github.com/bmuschko/lets-gopher-exercise
+
+require (
+	github.com/Netflix/go-expect v0.0.0-20180928190340-9d1f4485533b // indirect
+	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/hinshun/vt10x v0.0.0-20180809195222-d55458df857c // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/mattn/go-colorable v0.0.9 // indirect
+	github.com/mattn/go-isatty v0.0.4 // indirect
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
+	github.com/mitchellh/go-homedir v1.0.0
+	github.com/pkg/errors v0.8.1 // indirect                      <------
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/pflag v1.0.3 // indirect
+	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
+	golang.org/x/net v0.0.0-20190110200230-915654e7eabc // indirect
+	golang.org/x/sys v0.0.0-20190116161447-11f53e031339 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.7.1
+	gopkg.in/src-d/go-billy.v4 v4.3.0 // indirect
+	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/yaml.v2 v2.2.2
+)
+
+go 1.13
 ```
 
 3. On line 15 of the file `utils/error.go` you can use the instruction `errors.WithMessage(err, "error")` from the package `github.com/pkg/errors` instead of `fmt.Sprintf("error: %s", err)`. Make sure to import the package.
-4. Running the command `dep status` should show that the version `^0.8.1` was requested but the version `0.8.1` was selected. If a newer version would be released then `dep` would pick a newer version.
+4. Now that we are actually using the `error` package in our code, running `go mod tidy` will fix the dependency by removing the `// indirect` comment in `go.mod`.
 
 ```
-$ dep status
-PROJECT                               CONSTRAINT     VERSION        REVISION  LATEST   PKGS USED
-github.com/emirpasic/gods             v1.12.0        v1.12.0        1615341   v1.12.0  6
-github.com/inconshreveable/mousetrap  v1.0           v1.0           76626ae   v1.0     1
-github.com/jbenet/go-context          branch master  branch master  d14ea06   d14ea06  1
-github.com/kballard/go-shellquote     branch master  branch master  95032a8   95032a8  1
-github.com/kevinburke/ssh_config      0.5            0.5            81db2a7   0.5      1
-github.com/mattn/go-colorable         v0.0.9         v0.0.9         167de6b   v0.0.9   1
-github.com/mattn/go-isatty            v0.0.4         v0.0.4         6ca4dbf   v0.0.4   1
-github.com/mgutz/ansi                 branch master  branch master  9520e82   9520e82  1
-github.com/mitchellh/go-homedir       1.0.0          v1.0.0         ae18d6b   v1.0.0   1
-github.com/pelletier/go-buffruneio    v0.2.0         v0.2.0         c37440a   v0.2.0   1
-github.com/pkg/errors                 ^0.8.1         v0.8.1         ba968bf   v0.8.1   1. <------
-github.com/sergi/go-diff              v1.0.0         v1.0.0         1744e29   v1.0.0   1
-github.com/spf13/cobra                0.0.3          v0.0.3         ef82de7   v0.0.3   1
-github.com/spf13/pflag                v1.0.3         v1.0.3         298182f   v1.0.3   1
-github.com/src-d/gcfg                 v1.4.0         v1.4.0         1ac3a1a   v1.4.0   4
-github.com/xanzy/ssh-agent            v0.2.0         v0.2.0         640f0ab   v0.2.0   1
-golang.org/x/crypto                   branch master  branch master  ff983b9   7f87c0f  16
-golang.org/x/net                      branch master  branch master  915654e   afe646c  1
-golang.org/x/sys                      branch master  branch master  11f53e0   775f819  2
-golang.org/x/text                     v0.3.0         v0.3.0         f21a4df   v0.3.0   6
-gopkg.in/AlecAivazis/survey.v1        1.7.1          v1.7.1         e205523   v1.7.1   3
-gopkg.in/src-d/go-billy.v4            v4.3.0         v4.3.0         9826264   v4.3.0   5
-gopkg.in/src-d/go-git.v4              3dbfb89                       3dbfb89            40
-gopkg.in/warnings.v0                  v0.1.2         v0.1.2         ec4a0fe   v0.1.2   1
-gopkg.in/yaml.v2                      2.2.2          v2.2.2         51d6538   v2.2.2   1
+module github.com/bmuschko/lets-gopher-exercise
+
+require (
+	github.com/Netflix/go-expect v0.0.0-20180928190340-9d1f4485533b // indirect
+	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/hinshun/vt10x v0.0.0-20180809195222-d55458df857c // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/mattn/go-colorable v0.0.9 // indirect
+	github.com/mattn/go-isatty v0.0.4 // indirect
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
+	github.com/mitchellh/go-homedir v1.0.0
+	github.com/pkg/errors v0.8.1                      <------
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/pflag v1.0.3 // indirect
+	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
+	golang.org/x/net v0.0.0-20190110200230-915654e7eabc // indirect
+	golang.org/x/sys v0.0.0-20190116161447-11f53e031339 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.7.1
+	gopkg.in/src-d/go-billy.v4 v4.3.0 // indirect
+	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/yaml.v2 v2.2.2
+)
+
+go 1.13
 ```
 
-5. Use the equal sign to pick a concrete version. Re-run the `dep ensure` command. The output of the `dep status` should change.
-
-```yaml
-[[constraint]]
-  name = "github.com/pkg/errors"
-  version = "=0.8.1"
-```
+5. Running the command `go mod graph` shows that the version `v0.8.1` was selected by our package. We can also see that an earlier version of package was requested as transitive dependency by an external package.
 
 ```
-$ dep status
-PROJECT                               CONSTRAINT     VERSION        REVISION  LATEST   PKGS USED
-github.com/emirpasic/gods             v1.12.0        v1.12.0        1615341   v1.12.0  6
-github.com/inconshreveable/mousetrap  v1.0           v1.0           76626ae   v1.0     1
-github.com/jbenet/go-context          branch master  branch master  d14ea06   d14ea06  1
-github.com/kballard/go-shellquote     branch master  branch master  95032a8   95032a8  1
-github.com/kevinburke/ssh_config      0.5            0.5            81db2a7   0.5      1
-github.com/mattn/go-colorable         v0.0.9         v0.0.9         167de6b   v0.0.9   1
-github.com/mattn/go-isatty            v0.0.4         v0.0.4         6ca4dbf   v0.0.4   1
-github.com/mgutz/ansi                 branch master  branch master  9520e82   9520e82  1
-github.com/mitchellh/go-homedir       1.0.0          v1.0.0         ae18d6b   v1.0.0   1
-github.com/pelletier/go-buffruneio    v0.2.0         v0.2.0         c37440a   v0.2.0   1
-github.com/pkg/errors                 0.8.1          v0.8.1         ba968bf   v0.8.1   1 <------
-github.com/sergi/go-diff              v1.0.0         v1.0.0         1744e29   v1.0.0   1
-github.com/spf13/cobra                0.0.3          v0.0.3         ef82de7   v0.0.3   1
-github.com/spf13/pflag                v1.0.3         v1.0.3         298182f   v1.0.3   1
-github.com/src-d/gcfg                 v1.4.0         v1.4.0         1ac3a1a   v1.4.0   4
-github.com/xanzy/ssh-agent            v0.2.0         v0.2.0         640f0ab   v0.2.0   1
-golang.org/x/crypto                   branch master  branch master  ff983b9   7f87c0f  16
-golang.org/x/net                      branch master  branch master  915654e   afe646c  1
-golang.org/x/sys                      branch master  branch master  11f53e0   775f819  2
-golang.org/x/text                     v0.3.0         v0.3.0         f21a4df   v0.3.0   6
-gopkg.in/AlecAivazis/survey.v1        1.7.1          v1.7.1         e205523   v1.7.1   3
-gopkg.in/src-d/go-billy.v4            v4.3.0         v4.3.0         9826264   v4.3.0   5
-gopkg.in/src-d/go-git.v4              3dbfb89                       3dbfb89            40
-gopkg.in/warnings.v0                  v0.1.2         v0.1.2         ec4a0fe   v0.1.2   1
-gopkg.in/yaml.v2                      2.2.2          v2.2.2         51d6538   v2.2.2   1
+$ go mod graph
+github.com/bmuschko/lets-gopher-exercise github.com/Netflix/go-expect@v0.0.0-20180928190340-9d1f4485533b
+github.com/bmuschko/lets-gopher-exercise github.com/emirpasic/gods@v1.12.0
+github.com/bmuschko/lets-gopher-exercise github.com/hinshun/vt10x@v0.0.0-20180809195222-d55458df857c
+github.com/bmuschko/lets-gopher-exercise github.com/inconshreveable/mousetrap@v1.0.0
+github.com/bmuschko/lets-gopher-exercise github.com/kballard/go-shellquote@v0.0.0-20180428030007-95032a82bc51
+github.com/bmuschko/lets-gopher-exercise github.com/mattn/go-colorable@v0.0.9
+github.com/bmuschko/lets-gopher-exercise github.com/mattn/go-isatty@v0.0.4
+github.com/bmuschko/lets-gopher-exercise github.com/mgutz/ansi@v0.0.0-20170206155736-9520e82c474b
+github.com/bmuschko/lets-gopher-exercise github.com/mitchellh/go-homedir@v1.0.0
+github.com/bmuschko/lets-gopher-exercise github.com/pkg/errors@v0.8.1            <------
+github.com/bmuschko/lets-gopher-exercise github.com/spf13/cobra@v0.0.3
+github.com/bmuschko/lets-gopher-exercise github.com/spf13/pflag@v1.0.3
+github.com/bmuschko/lets-gopher-exercise golang.org/x/crypto@v0.0.0-20190103213133-ff983b9c42bc
+github.com/bmuschko/lets-gopher-exercise golang.org/x/net@v0.0.0-20190110200230-915654e7eabc
+github.com/bmuschko/lets-gopher-exercise golang.org/x/sys@v0.0.0-20190116161447-11f53e031339
+github.com/bmuschko/lets-gopher-exercise gopkg.in/AlecAivazis/survey.v1@v1.7.1
+github.com/bmuschko/lets-gopher-exercise gopkg.in/src-d/go-billy.v4@v4.3.0
+github.com/bmuschko/lets-gopher-exercise gopkg.in/src-d/go-git.v4@v4.8.1
+github.com/bmuschko/lets-gopher-exercise gopkg.in/yaml.v2@v2.2.2
+gopkg.in/src-d/go-billy.v4@v4.3.0 github.com/kr/pretty@v0.1.0
+gopkg.in/src-d/go-billy.v4@v4.3.0 golang.org/x/sys@v0.0.0-20180903190138-2b024373dcd9
+gopkg.in/src-d/go-billy.v4@v4.3.0 gopkg.in/check.v1@v1.0.0-20180628173108-788fd7840127
+gopkg.in/yaml.v2@v2.2.2 gopkg.in/check.v1@v0.0.0-20161208181325-20d25e280405
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/alcortesm/tgz@v0.0.0-20161220082320-9c5fe88206d7
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/anmitsu/go-shlex@v0.0.0-20161002113705-648efa622239
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/davecgh/go-spew@v1.1.1
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/emirpasic/gods@v1.9.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/flynn/go-shlex@v0.0.0-20150515145356-3f9db97f8568
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/gliderlabs/ssh@v0.1.1
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/google/go-cmp@v0.2.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/jbenet/go-context@v0.0.0-20150711004518-d14ea06fba99
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/jessevdk/go-flags@v1.4.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/kevinburke/ssh_config@v0.0.0-20180830205328-81db2a75821e
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/mitchellh/go-homedir@v1.0.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/pelletier/go-buffruneio@v0.2.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/pkg/errors@v0.8.0                      <------
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/pmezard/go-difflib@v1.0.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/sergi/go-diff@v1.0.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/src-d/gcfg@v1.4.0
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/stretchr/testify@v1.2.2
+gopkg.in/src-d/go-git.v4@v4.8.1 github.com/xanzy/ssh-agent@v0.2.0
+gopkg.in/src-d/go-git.v4@v4.8.1 golang.org/x/crypto@v0.0.0-20180904163835-0709b304e793
+gopkg.in/src-d/go-git.v4@v4.8.1 golang.org/x/net@v0.0.0-20180906233101-161cd47e91fd
+gopkg.in/src-d/go-git.v4@v4.8.1 golang.org/x/text@v0.3.0
+gopkg.in/src-d/go-git.v4@v4.8.1 gopkg.in/check.v1@v1.0.0-20180628173108-788fd7840127
+gopkg.in/src-d/go-git.v4@v4.8.1 gopkg.in/src-d/go-billy.v4@v4.2.1
+gopkg.in/src-d/go-git.v4@v4.8.1 gopkg.in/src-d/go-git-fixtures.v3@v3.1.1
+gopkg.in/src-d/go-git.v4@v4.8.1 gopkg.in/warnings.v0@v0.1.2
+gopkg.in/src-d/go-billy.v4@v4.2.1 github.com/kr/pretty@v0.1.0
+gopkg.in/src-d/go-billy.v4@v4.2.1 golang.org/x/sys@v0.0.0-20180903190138-2b024373dcd9
+gopkg.in/src-d/go-billy.v4@v4.2.1 gopkg.in/check.v1@v1.0.0-20180628173108-788fd7840127
+github.com/kr/pretty@v0.1.0 github.com/kr/text@v0.1.0
+github.com/kr/text@v0.1.0 github.com/kr/pty@v1.1.1
 ```

@@ -30,7 +30,8 @@ You should get a similar result if you just run with the `go vet` tool.
 ```
 $ go vet ./...
 # github.com/bmuschko/lets-gopher-exercise/cmd
-cmd/install.go:38: github.com/bmuschko/lets-gopher-exercise/remote.GitRepo composite literal uses unkeyed fields
+cmd/install.go:37:11: github.com/bmuschko/lets-gopher-exercise/remote.GitRepo composite literal uses unkeyed fields
+cmd/install.go:39:13: result of errors.New call not used
 ```
 
 You can fix the issue by assigning the variables to the fields in `remote.GitRepo`.
