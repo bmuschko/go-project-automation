@@ -10,8 +10,68 @@ go: downloading github.com/pkg/errors v0.8.1
 go: extracting github.com/pkg/errors v0.8.1
 ```
 
+The contents of `go.mod` look as follows. You can see that the `errors` package has been marked as indirect. The indirect comment indicates a dependency is not used directly by this module, only indirectly by other module dependencies.
+
+```
+module github.com/bmuschko/lets-gopher-exercise
+
+require (
+	github.com/Netflix/go-expect v0.0.0-20180928190340-9d1f4485533b // indirect
+	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/hinshun/vt10x v0.0.0-20180809195222-d55458df857c // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/mattn/go-colorable v0.0.9 // indirect
+	github.com/mattn/go-isatty v0.0.4 // indirect
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
+	github.com/mitchellh/go-homedir v1.0.0
+	github.com/pkg/errors v0.8.1 // indirect                      <------
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/pflag v1.0.3 // indirect
+	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
+	golang.org/x/net v0.0.0-20190110200230-915654e7eabc // indirect
+	golang.org/x/sys v0.0.0-20190116161447-11f53e031339 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.7.1
+	gopkg.in/src-d/go-billy.v4 v4.3.0 // indirect
+	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/yaml.v2 v2.2.2
+)
+
+go 1.13
+```
+
 3. On line 15 of the file `utils/error.go` you can use the instruction `errors.WithMessage(err, "error")` from the package `github.com/pkg/errors` instead of `fmt.Sprintf("error: %s", err)`. Make sure to import the package.
-4. Running the command `go mod graph` shows that the version `v0.8.0` was selected. The version `v0.8.0` was selected because it is already a transitive dependency of `go-git.v4` even though a new version does exist.
+4. Now that we are actually using the `error` package in our code, running `go mod tidy` will fix the dependency by removing the `// indirect` comment in `go.mod`.
+
+```
+module github.com/bmuschko/lets-gopher-exercise
+
+require (
+	github.com/Netflix/go-expect v0.0.0-20180928190340-9d1f4485533b // indirect
+	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/hinshun/vt10x v0.0.0-20180809195222-d55458df857c // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/mattn/go-colorable v0.0.9 // indirect
+	github.com/mattn/go-isatty v0.0.4 // indirect
+	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
+	github.com/mitchellh/go-homedir v1.0.0
+	github.com/pkg/errors v0.8.1                      <------
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/pflag v1.0.3 // indirect
+	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
+	golang.org/x/net v0.0.0-20190110200230-915654e7eabc // indirect
+	golang.org/x/sys v0.0.0-20190116161447-11f53e031339 // indirect
+	gopkg.in/AlecAivazis/survey.v1 v1.7.1
+	gopkg.in/src-d/go-billy.v4 v4.3.0 // indirect
+	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/yaml.v2 v2.2.2
+)
+
+go 1.13
+```
+
+5. Running the command `go mod graph` shows that the version `v0.8.1` was selected by our package. We can also see that an earlier version of package was requested as transitive dependency by an external package.
 
 ```
 $ go mod graph
@@ -24,7 +84,7 @@ github.com/bmuschko/lets-gopher-exercise github.com/mattn/go-colorable@v0.0.9
 github.com/bmuschko/lets-gopher-exercise github.com/mattn/go-isatty@v0.0.4
 github.com/bmuschko/lets-gopher-exercise github.com/mgutz/ansi@v0.0.0-20170206155736-9520e82c474b
 github.com/bmuschko/lets-gopher-exercise github.com/mitchellh/go-homedir@v1.0.0
-github.com/bmuschko/lets-gopher-exercise github.com/pkg/errors@v0.8.1
+github.com/bmuschko/lets-gopher-exercise github.com/pkg/errors@v0.8.1            <------
 github.com/bmuschko/lets-gopher-exercise github.com/spf13/cobra@v0.0.3
 github.com/bmuschko/lets-gopher-exercise github.com/spf13/pflag@v1.0.3
 github.com/bmuschko/lets-gopher-exercise golang.org/x/crypto@v0.0.0-20190103213133-ff983b9c42bc
